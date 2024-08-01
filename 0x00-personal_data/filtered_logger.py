@@ -6,6 +6,8 @@ Module to filter and obfuscate log messages.
 from typing import List
 import re
 import logging
+import os
+import mysql.connector
 
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
@@ -30,6 +32,32 @@ def get_logger() -> logging.Logger:
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
     return logger
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    Returns a connector to a MySQL database.
+    """
+    return mysql.connector.connect(
+        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
+        database=os.getenv('PERSONAL_DATA_DB_NAME'),
+        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''))
+
+def main():
+    """
+    Entry point of the program.
+    """
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users")
+    fields = [i[0] for i in cursor.description]
+    logger = get_logger()
+    for row in cursor:
+        message = ''.join(
+            f'{fields[i]}={str(row[i])}; ' for i in range(len(fields)))
+        logger.info(message)
+    cursor.close()
+    db.close()
 
 
 class RedactingFormatter(logging.Formatter):
