@@ -30,8 +30,8 @@ class DB:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
         return self.__session
-    
-    def add_user(self, email:str, hashed_password:str) -> User:
+
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
         Add a user to the database
         """
@@ -39,7 +39,7 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
-    
+
     def find_user_by(self, **kwargs) -> User:
         """
         Find a user by a given attribute
@@ -51,8 +51,8 @@ class DB:
             return user
         except InvalidRequestError:
             raise InvalidRequestError
-        
-    def update_user(self, user_id:int, **kwargs) -> None:
+
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         Update a user's attributes
         """
@@ -61,6 +61,3 @@ class DB:
             if not hasattr(user, key):
                 raise ValueError(f"Invalid attribute: {key}")
             setattr(user, key, value)
-
-                    
-        
