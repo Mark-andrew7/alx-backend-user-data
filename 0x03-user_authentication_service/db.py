@@ -48,9 +48,11 @@ class DB:
             user = self._session.query(User).filter_by(**kwargs).first()
             if user is None:
                 raise NoResultFound
+            elif not kwargs:
+                raise InvalidRequestError
             return user
-        except InvalidRequestError:
-            raise InvalidRequestError
+        except NoResultFound:
+            raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
@@ -59,5 +61,5 @@ class DB:
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(user, key):
-                raise ValueError(f"Invalid attribute: {key}")
+                raise ValueError()
             setattr(user, key, value)
