@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 auth module
 """
@@ -12,6 +13,9 @@ class Auth:
     """
 
     def __init__(self):
+        """
+        Initialize a new Auth instance
+        """
         self._db = DB()
 
     def _hash_password(password: str) -> bytes:
