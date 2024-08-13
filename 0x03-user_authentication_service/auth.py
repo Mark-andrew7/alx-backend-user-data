@@ -50,7 +50,7 @@ class Auth:
         user_password = user.hashed_password
         if bcrypt.checkpw(password.encode('utf-8'), user_password):
             return True
-        
+
     def _generate_uuid(self) -> str:
         """
         Generate a UUID
