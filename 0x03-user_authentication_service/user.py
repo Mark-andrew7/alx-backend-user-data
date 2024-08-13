@@ -8,6 +8,7 @@ from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
 
+
 class User(Base):
     """User class to interact with the ORM"""
     __tablename__ = 'users'
