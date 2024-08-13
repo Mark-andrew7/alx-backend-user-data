@@ -20,8 +20,8 @@ def home() -> str:
 def register_user() -> str:
     """register user route
     """
-    email = request.form.get('email')
-    password = request.form.get('password')
+    email = request.form['email']
+    password = request.form['password']
 
     try:
         user = AUTH.register_user(email, password)
@@ -31,4 +31,4 @@ def register_user() -> str:
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(debug="True", host="0.0.0.0", port="5000")
