@@ -45,7 +45,7 @@ def login() -> str:
     else:
         abort(401)
 
-    
+
 @app.route('/sessions', methods=['DELETE'])
 def logout() -> str:
     """logout route
