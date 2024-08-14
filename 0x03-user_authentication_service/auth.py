@@ -57,7 +57,7 @@ class Auth:
         user_password = user.hashed_password
         if bcrypt.checkpw(password.encode('utf-8'), user_password):
             return True
-        
+
     def create_session(self, email: str) -> str:
         """
         Create a session
